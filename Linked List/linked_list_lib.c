@@ -2,12 +2,8 @@
 #include <stdlib.h>
 #include <linked_list.h>
 
-//in main declare list l_one = NULL;
 
-/*
-  @Overview: insert an element in the first position
-*/
-void list_insert_front(headPtr* l, int x){
+void listInsertFront(headPtr* l, int x){
   node* new = malloc(sizeof(node));
   if(new == NULL)
     fprintf(stderr, "error on malloc");
@@ -16,19 +12,15 @@ void list_insert_front(headPtr* l, int x){
   *l = new;
 }
 
-/*
-  @Overview: delete the first element of the list
-*/
-void list_delete_front(headPtr* l){
+
+void listDeleteFront(headPtr* l){
   node* del = *l;
   *l = (*l)->next;
   free(del);
 }
 
-/*
-  @Overview: insert an element in the last position
-*/
-void list_insert_bottom(headPtr* l, int x){
+
+void listInsertBottom(headPtr* l, int x){
   node* new = malloc(sizeof(node));
   if(new == NULL)
     fprintf(stderr, "error on malloc");
@@ -36,22 +28,20 @@ void list_insert_bottom(headPtr* l, int x){
   new->next = NULL;
 
   //if l is empty -> insert in front
-  if(*l == NULL){
+  if(*l == NULL){   //head insertion
     new->next = *l;
     *l = new;
     return;
   }
-  //otherwise read all the elements until the last one
+
   node* curr = *l;
   while(curr->next != NULL)
     curr = curr->next;
   curr->next = new;
 }
 
-/*
-  @Overview: delete the last element of the list
-*/
-void list_delete_bottom(headPtr* l){
+
+void listDeleteBottom(headPtr* l){
   node* prev = NULL;
   node* curr = *l;
   while(curr->next != NULL){
@@ -62,10 +52,8 @@ void list_delete_bottom(headPtr* l){
   free(curr);
 }
 
-/*
-  @Overview: insert an element in the right position to make the list sorted
-*/
-void list_insert_sorted(headPtr* l, int x){
+
+void listInsertSorted(headPtr* l, int x){
   node* new = malloc(sizeof(node));
   if(new == NULL)
     fprintf(stderr, "error on malloc");
@@ -89,10 +77,9 @@ void list_insert_sorted(headPtr* l, int x){
   }
 }
 
-/*
-  @Overview: delete a specific element of the list
-*/
-void list_delete_element(headPtr* l, int x){
+
+void listDeleteElement(headPtr* l, int x){
+
   node* curr = *l;
   node* prev = NULL;
   while(curr != NULL && curr->val != x){
@@ -102,19 +89,23 @@ void list_delete_element(headPtr* l, int x){
   if(curr == NULL)
     fprintf(stderr, "element not found\n");
   else{
-    node* del = curr;
-    prev->next = curr->next;
-    curr = curr->next;
-    free(del);
+    node* tmp;
+    if(prev == NULL){
+      tmp = *l;
+      *l = (*l)->next;
+    }
+    else{
+      tmp = curr;
+      prev->next = curr->next;
+      curr = curr->next;
+    }
+    free(tmp);
   }
 }
 
-/*
-  @Overview: delete all elements of the list
-*/
-void list_delete_all(headPtr* l, int x){
 
-  int found = 0;
+void listDeleteOccurrences(headPtr* l, int x){
+
   node* curr = *l;
   node* prev = NULL;
   while(curr != NULL){
@@ -125,18 +116,35 @@ void list_delete_all(headPtr* l, int x){
     if(curr == NULL)
       fprintf(stderr, "element not found\n");
     else{
-      node* del = curr;
-      prev->next = curr->next;
-      curr = curr->next;
-      free(del);
+      node* tmp;
+      if(prev == NULL){
+        tmp = *l;
+        *l = (*l)->next;
+        curr = *l;
+      }
+      else{
+        tmp = curr;
+        prev->next = curr->next;
+        curr = curr->next;
+      }
+      free(tmp);
     }
   }
 }
 
-/*
-  @Overview: list length
-*/
-int list_length(headPtr l){
+
+int listGetElement(headPtr l, int i){
+
+  int element = -1;
+  for (size_t k = 0; l != NULL && k < i; k++) {
+    element = l->val;
+    l = l->next;
+  }
+  return element;
+}
+
+
+int listLength(headPtr l){
   int counter = 0;
   while(l != NULL){
     counter++;
@@ -145,10 +153,8 @@ int list_length(headPtr l){
   return counter;
 }
 
-/*
-  @Overview: print the list
-*/
-void list_print(headPtr l){
+
+void listPrint(headPtr l){
   while(l != NULL){
     printf("%d-> ", l->val);
     l = l->next;
@@ -156,12 +162,10 @@ void list_print(headPtr l){
   printf("End\n");
 }
 
-/*
-  @Overview: print the list reversed
-*/
-void list_print_reverse(headPtr l){
+
+void listPrintReverse(headPtr l){
   if(l == NULL)
     return;
-  list_print_reverse(l->next);
+  listPrintReverse(l->next);
   printf("%d-> ", l->val);
 }
