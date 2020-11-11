@@ -2,4 +2,4 @@
   
 Linked List  
 Doubly Linked List  
-Tree  
+Binary Search Tree (BST)
