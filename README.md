@@ -4,5 +4,5 @@
 * Doubly Linked List  
 * Binary Search Tree (BST)  
   
-  You can test these functions using the main.c file.  
-  Complile from terminal using `make`.
+You can test these functions using the main.c file.  
+Complile from terminal typing `make`.
